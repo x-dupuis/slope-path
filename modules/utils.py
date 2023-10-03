@@ -1,10 +1,10 @@
 import numpy as np
+from math import isnan, isinf
 from numba import njit
 
 @njit
 def sorted_L1_norm(b,Lambda):
     b = - np.sort(-np.abs(b))  # x sorted by decreasing absolute value 
-    # print('norm')
     return np.sum(Lambda*b)
 
 @njit
@@ -12,17 +12,15 @@ def dual_sorted_L1_norm(v,Lambda):
     v = - np.sort(-np.abs(v)) # v sorted by decreasing absolute value 
     v_cum = np.cumsum(v)  # cumulative sum of v
     Lambda_cum = np.cumsum(Lambda) # cumulative sum of Lambda
-    # print('dual norm')
     return np.max(v_cum/Lambda_cum)
 
 @njit
-def PD_gap(b, gamma, X, y, Lambda):
+def PD_gap(b, X, y, Lambda):
     res = y - X@b
-    primal = 1/2*np.linalg.norm(res)**2 + gamma*sorted_L1_norm(b, Lambda)
+    primal = 1/2*np.linalg.norm(res)**2 + sorted_L1_norm(b, Lambda)
     norm_res = dual_sorted_L1_norm(X.T@res, Lambda)
-    res = res if norm_res<=gamma else gamma*res/norm_res
+    res = res if norm_res<=1. or isnan(norm_res) or isinf(norm_res) else res/norm_res
     gap = primal - 1/2*(np.linalg.norm(y)**2 - np.linalg.norm(y-res)**2)
-    # print('gap')
     return primal, gap
 
 @njit
@@ -36,7 +34,6 @@ def pattern(b, tol):
     q = np.flip(np.cumsum(np.flip(jump))) # quicker
     m = np.arange(len(b))
     m[perm] = q * sign[perm]
-    # print('pattern')
     return m
 
 @njit
@@ -52,7 +49,6 @@ def face_pattern(z, Lambda, rtol, atol):
     q = np.flip(np.cumsum(np.flip(l)))  # quicker
     m = np.arange(len(z))
     m[perm] = q * sign[perm]
-    # print('face pattern')
     return m
 
 @njit
@@ -61,7 +57,6 @@ def pattern_matrix(m):
     U_m = np.empty((len(m),k))
     for j in range(k):
         U_m[:,j] = np.sign(m)*(np.abs(m) == k-j) 
-    # print('pattern matrix')
     return U_m
 
 @njit
@@ -76,6 +71,5 @@ def affine_components(X, y, Lambda, m):
     # g(gamma) = a_g * gamma + b_g
     a_g = - X.T @ X_tilde @ a_s
     b_g = X.T @ (y - X_tilde @ b_s)
-    # print('affine compo')
     return a_s, b_s, a_g, b_g
 
