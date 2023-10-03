@@ -9,4 +9,4 @@ This repository provides code to:
 ```
 
 - compute its solution path as $\gamma \in (0, +\infty)$;
-- reproduce the experiments of the article *The Solution Path of SLOPE*.
+- reproduce the numerical experiments of the paper *The Solution Path of SLOPE*.
