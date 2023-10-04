@@ -36,5 +36,5 @@ print(f'with ridge regularization: nodes = {np.array(Gamma2)}\n')
 
 # Solver 
 gamma = 3.
-sol, (primal, gap) = path_solver(X, y , gamma*Lambda, k_max=1e3, rtol_pattern=1e-8, atol_pattern = 1e-10, rtol_gamma=1e-10, split_max=1e1, log=0)
+sol, (primal, gap), k = path_solver(X, y , gamma*Lambda, k_max=1e3, rtol_pattern=1e-8, atol_pattern = 1e-10, rtol_gamma=1e-10, split_max=1e1, log=0)
 print(f'solution for gamma = {gamma}: {sol}')

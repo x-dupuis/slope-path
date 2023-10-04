@@ -114,4 +114,4 @@ def path_solver(X, y, Lambda, k_max, rtol_pattern, atol_pattern, rtol_gamma, spl
         if log:
             with objmode():
                 print('node {}: running gamma = {:.3f}'.format(k, run_gamma))
-    return sol, PD_gap(sol, X, y, Lambda)
+    return sol, PD_gap(sol, X, y, Lambda), k
