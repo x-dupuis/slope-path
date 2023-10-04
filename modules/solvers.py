@@ -48,7 +48,7 @@ def full_path(X, y, Lambda, ratio, k_max, rtol_pattern, atol_pattern, rtol_gamma
     T = [t_out - t_in]
     if log:
         with objmode():
-            print('node {}: gamma = {:.3f}, {:.2e}s elapsed, gap = {:.2e}'.format(k, gamma, t_out - t_in, 0))
+            print('node {}: gamma = {:.3f}, elapsed time = {:.2e}s, gap = {:.2e}'.format(k, gamma, t_out - t_in, 0))
     while gamma > gamma_min and k < k_max:
         k += 1
         a_s,b_s,a_g,b_g = affine_components(X, y, Lambda, m)
@@ -78,7 +78,7 @@ def full_path(X, y, Lambda, ratio, k_max, rtol_pattern, atol_pattern, rtol_gamma
         T.append(t_out - t_in)
         if log:
             with objmode():
-                print('node {}: gamma = {:.3f}, {:.2e}s elapsed, gap = {:.2e}'.format(k, gamma, t_out - t_in, gap)) 
+                print('node {}: gamma = {:.3f}, elapsed time = {:.2e}s, gap = {:.2e}'.format(k, gamma, t_out - t_in, gap)) 
     return Gamma, Sol, Primal, Gap, M[:-1], Split[:-1], T
 
 @njit
