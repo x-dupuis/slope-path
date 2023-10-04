@@ -1,0 +1,11 @@
+name: slope-path
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - pandas
+  - numba
+  - jupyterlab
+  - numpy
+  - matplotlib
+  - scipy
