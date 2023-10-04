@@ -118,8 +118,10 @@ for ratio in [0.5, 0.1, 0.02]:
 with pd.option_context('display.float_format', '{:,.2e}'.format):
     print(benchmark)
 
-benchmark.to_csv('wine-quality_benchmark2.csv', float_format='{:.2e}'.format)
+benchmark.to_csv('wine-quality_benchmark2.csv', float_format='{:.2e}'.format, mode='a')
 
-print(benchmark.to_latex(float_format='{:.2e}'.format))
+with open('wine-quality_benchmark.txt', 'a') as f:
+                f.write(benchmark.to_latex(float_format='{:.2e}'.format))
+# print(benchmark.to_latex(float_format='{:.2e}'.format))
 
 
