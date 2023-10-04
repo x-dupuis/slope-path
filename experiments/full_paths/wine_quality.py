@@ -49,7 +49,7 @@ for gamma in Gamma:
 ax.axhline(0, color='k', linestyle=':', xmax=0.95)
 ax.plot(0, [np.abs(ols)], 'rx')
 # ax.set_xscale('symlog')
-ax.set_title('Solution path')
+ax.set_title('Absolute solution path')
 plt.show() 
 
 # Solver 
