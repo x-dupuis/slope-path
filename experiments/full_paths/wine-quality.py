@@ -52,6 +52,8 @@ ax.plot(0, [np.abs(ols)], 'rx')
 ax.set_title('Absolute solution path')
 plt.show() 
 
+fig.savefig('../results/wine-quality_path', bbox_inches="tight", pad_inches=0.05)
+
 # Solver 
 frac = 0.5; gamma = frac*dual_norm(X.T@y, Lambda)
 t_start = timer()
