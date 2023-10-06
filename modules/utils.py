@@ -20,7 +20,8 @@ def PD_gap(b, X, y, Lambda):
     primal = 1/2*np.linalg.norm(res)**2 + sorted_L1_norm(b, Lambda)
     norm_res = dual_sorted_L1_norm(X.T@res, Lambda)
     res = res if norm_res<=1. or isnan(norm_res) or isinf(norm_res) else res/norm_res
-    gap = primal - 1/2*(np.linalg.norm(y)**2 - np.linalg.norm(y-res)**2)
+    dual = 1/2*(np.linalg.norm(y)**2 - np.linalg.norm(y-res)**2)
+    gap = primal - dual
     return primal, gap
 
 @njit
