@@ -74,3 +74,16 @@ def affine_components(X, y, Lambda, m):
     b_g = X.T @ (y - X_tilde @ b_s)
     return a_s, b_s, a_g, b_g
 
+@njit
+def affine_components_LASSO(X, y, s):
+    I = s!=0
+    P = X[:,I].T @ X[:,I]
+    B = X[:,I].T @ y
+    A = -s[I]
+    # nonzero components (gamma) = a_s * gamma + b_s
+    a_s = np.linalg.solve(P,A)
+    b_s = np.linalg.solve(P,B)
+    # g(gamma) = a_g * gamma + b_g
+    a_g = - X.T @ X[:,I] @ a_s
+    b_g = X.T @ (y - X[:,I] @ b_s)
+    return a_s, b_s, a_g, b_g
