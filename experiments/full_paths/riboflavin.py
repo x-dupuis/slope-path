@@ -47,8 +47,8 @@ ax.set_title(f'Solution path (first {K} nodes)')
 plt.show() 
 
 # Solver 
-frac = 0.5; gamma = frac*dual_norm(X.T@y, Lambda)
+ratio = 0.5; gamma = ratio*dual_norm(X.T@y, Lambda)
 t_start = timer()
-sol, (primal, gap), k = path_solver(X, y , gamma*Lambda, k_max=1e3, rtol_pattern=1e-10, atol_pattern = 1e-10, rtol_gamma=1e-10, split_max=1e1, log=0)
+sol, (primal, gap), k = path_solver(X, y , ratio*Lambda, k_max=1e3, rtol_pattern=1e-10, atol_pattern = 1e-10, rtol_gamma=1e-10, split_max=1e1, log=0)
 print(f'pattern for {frac} x gamma_max: {pattern(sol, tol=1e-10)}')
 print(f'elapsed time = {timer() - t_start:.2e}s, crossed nodes = {k}, primal-dual gap = {gap:.2e}')
