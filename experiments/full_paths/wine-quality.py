@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from timeit import default_timer as timer
 
 sys.path.append('../..')
-from modules import full_path, path_solver, dual_sorted_L1_norm as dual_norm, pattern, full_path_LASSO
+from modules import full_path, path_solver, dual_sorted_L1_norm as dual_norm, pattern, full_path_LASSO, min_SURE, min_SURE_LASSO
 
 # Import of the data set
 wine = pd.read_csv('../datasets/winequality-red.csv', sep=';')
@@ -33,6 +33,9 @@ Lambda = np.sqrt(range(1,12))-np.sqrt(range(0,11))
 _ = full_path(X, y , Lambda, ratio=0., k_max=0., rtol_pattern=1e-6, atol_pattern = 1e-6, rtol_gamma=1e-6, split_max=1e1, log=0)
 _ = path_solver(X, y, Lambda, k_max=0., rtol_pattern=1e-6, atol_pattern = 1e-6, rtol_gamma=1e-6, split_max=1e1, log=0)
 _ = full_path_LASSO(X, y, ratio=0., k_max=0., rtol_sign=1e-6, atol_sign = 1e-6, rtol_gamma=1e-6, split_max=1e1, log=0)
+
+
+#### SLOPE ######
 
 # Full SLOPE path
 Gamma, Sol, Primal, Gap, M, Split, T = full_path(X, y , Lambda, ratio=1., k_max=1e4, rtol_pattern=1e-10, atol_pattern = 1e-10, rtol_gamma=1e-10, split_max=1e1, log=1)
@@ -62,6 +65,18 @@ sol, (primal, gap), k = path_solver(X, y , gamma*Lambda, k_max=1e3, rtol_pattern
 print(f'pattern for {frac} x gamma_max: {pattern(sol, tol=1e-10)}')
 print(f'elapsed time = {timer() - t_start:.2e}s, crossed nodes = {k}, primal-dual gap = {gap:.2e}')
 
+# SURE exact minimization for SLOPE
+sigma2 = np.linalg.norm(y-X@ols,ord=2)**2/(X.shape[0]-X.shape[1])
+Critical, SURE, Sol = min_SURE(X, y, Lambda, Gamma, M, sigma2, tol=1e-10)   
+i0 = np.argmin(SURE)
+print(f'SURE minimizer: gamma = {Critical[i0]:.3f}')
+print(f'SURE minimum: sure(gamma) = {SURE[i0]:.3f}')     
+print(f'solution in gamma: {Sol[i0]}')  
+print(f'solution pattern in gamma: {pattern(Sol[i0],tol=1e-10)}')
+
+
+########### LASSO ##############
+
 # Full LASSO path
 Gamma, Sol, S, Split, T = full_path_LASSO(X, y, ratio=1., k_max=1e4, rtol_sign=1e-10, atol_sign = 1e-10, rtol_gamma=1e-10, split_max=1e1, log=1)
 
@@ -82,3 +97,5 @@ ax.set_title('Absolute LASSO solution path')
 plt.show() 
 
 fig.savefig('../results/wine-quality_LASSOpath', bbox_inches="tight", pad_inches=0.05)
+
+# SURE exact minimization for LASSO
