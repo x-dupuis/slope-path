@@ -96,12 +96,12 @@ print(f'path (our): {time_path:.2e}s')
 # print(f'Newt-ALM: {time_newt_alm:.2e}s')
 
 # Benchmark
-nb_loops = 1000; nb_runs = 7 # nb_loops = 1000
+nb_loops = 1000; nb_runs = 7 
 
 benchmark = pd.DataFrame({},index=['FISTA', 'Anderson PGD', 'ADMM (rho=100)', 'hybrid CD', 'path (our)'])
 benchmark.columns.name='gamma / gamma_max'
 
-for ratio in [0.5, 0.1, 0.02]:
+for ratio in [0.5, 0.1]:
     gamma = ratio*dual_norm(X.T@y, Lambda)
     time_fista =np.mean(repeat('prox_grad(X, y, gamma/X.shape[0]*Lambda, fit_intercept=False, fista=True, tol=1e-12)',
                         repeat=nb_runs, number=nb_loops, globals=globals()))/nb_loops
@@ -120,7 +120,7 @@ with pd.option_context('display.float_format', '{:,.2e}'.format):
 
 benchmark.to_csv('../results/wine-quality_benchmark.csv', float_format='{:.2e}'.format, mode='a')
 
-with open('../results/wine-quality_benchmark.txt', 'a') as f:
-                f.write(benchmark.to_latex(float_format='{:.2e}'.format))
+# with open('../results/wine-quality_benchmark.txt', 'a') as f:
+#                 f.write(benchmark.to_latex(float_format='{:.2e}'.format))
 
 

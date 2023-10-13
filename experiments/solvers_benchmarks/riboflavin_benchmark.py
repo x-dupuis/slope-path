@@ -97,17 +97,17 @@ print(sol, primal, gap, '\n')
 # Benchmark
 nb_loops = 100; nb_runs = 7 
 
-benchmark = pd.DataFrame({},index=['ADMM (rho=100)', 'hybrid CD', 'path (our)'])
+benchmark = pd.DataFrame({},index=['hybrid CD', 'path (our)']) #'FISTA', 'Anderson PGD', 'ADMM (rho=100)', 
 benchmark.columns.name='gamma / gamma_max'
 
-for ratio in [0.5, 0.1, 0.02]:
+for ratio in [0.5, 0.1]:
     gamma = ratio*dual_norm(X.T@y, Lambda)
     # time_fista =np.mean(repeat('prox_grad(X, y, gamma/X.shape[0]*Lambda, fit_intercept=False, fista=True, tol=1e-12/X.shape[0], max_epochs=100_000)',
     #                     repeat=nb_runs, number=nb_loops, globals=globals()))/nb_loops
     # time_pgd =np.mean(repeat('prox_grad(X, y, gamma/X.shape[0]*Lambda, fit_intercept=False, anderson=True, tol=1e-12/X.shape[0], max_epochs=100_000)',
     #                   repeat=nb_runs, number=nb_loops, globals=globals()))/nb_loops
-    time_admm =np.mean(repeat('admm(X, y, gamma/X.shape[0]*Lambda, fit_intercept=False, rho=100, adaptive_rho=False, tol=1e-12/X.shape[0], max_epochs=100_000)',
-                       repeat=nb_runs, number=nb_loops, globals=globals()))/nb_loops
+    # time_admm =np.mean(repeat('admm(X, y, gamma/X.shape[0]*Lambda, fit_intercept=False, rho=100, adaptive_rho=False, tol=1e-12/X.shape[0], max_epochs=100_000)',
+    #                    repeat=nb_runs, number=nb_loops, globals=globals()))/nb_loops
     time_cd =np.mean(repeat('hybrid_cd(X, y, gamma/X.shape[0]*Lambda, fit_intercept=False, tol=1e-12/X.shape[0])',
                      repeat=nb_runs, number=nb_loops, globals=globals()))/nb_loops
     time_path =np.mean(repeat('path_solver(X, y, gamma*Lambda, k_max=1e3, rtol_pattern=1e-10, atol_pattern = 1e-10, rtol_gamma=1e-10, split_max=1e1, log=0)',
@@ -119,7 +119,7 @@ with pd.option_context('display.float_format', '{:,.2e}'.format):
 
 benchmark.to_csv('../results/riboflavin_benchmark.csv', float_format='{:.2e}'.format, mode='a')
 
-with open('../results/riboflavin_benchmark.txt', 'a') as f:
-                f.write(benchmark.to_latex(float_format='{:.2e}'.format))
+# with open('../results/riboflavin_benchmark.txt', 'a') as f:
+#                 f.write(benchmark.to_latex(float_format='{:.2e}'.format))
 
 
