@@ -160,3 +160,4 @@ cython_debug/
 #.idea/
 experiments/full_paths/genlasso_experiments.html
 experiments/full_paths/genlasso_experiments.pdf
+.DS_Store
