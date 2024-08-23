@@ -10,7 +10,7 @@ This repository provides code to:
 
 - compute its solution path as $\gamma \in (0, +\infty)$;
 - minimize exactly the SURE formula along the path;
-- reproduce the numerical experiments of the paper *The Solution Path of SLOPE*.
+- reproduce the numerical experiments of the paper *The Solution Path of SLOPE* by Xavier Dupuis and Patrick Tardivel (AISTATS, 2024).
 
 The `module` folder contains the code itself with:
 
