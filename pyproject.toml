@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools >= 77.0.3"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "slopepath"
+version = "1.0.0"
+description = "The exact slope path"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = ["numpy>=1.12", "numba", "scipy>=0.18.0"]
+
+[project.optional-dependencies]
+experiments = ["jupyterlab", "matplotlib", "pandas"]
+
+[tool.setuptools]
+packages = ["modules"]
